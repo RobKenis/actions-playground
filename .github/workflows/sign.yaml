@@ -1,0 +1,29 @@
+name: Sign and Publish the EXE
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    runs-on: [ "windows-latest" ]
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Setup Windows SDK
+        uses: GuillaumeFalourd/setup-windows10-sdk-action@v1.11
+        with:
+          sdk-version: 22621
+
+      - uses: dlemstra/code-sign-action@v1
+        with:
+          certificate: '${{ secrets.CERTIFICATE }}'
+          password: '${{ secrets.CERTIFICATE_PASS }}'
+          folder: 'exes'
+          recursive: true
