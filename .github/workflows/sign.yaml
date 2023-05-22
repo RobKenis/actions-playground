@@ -21,6 +21,17 @@ jobs:
         with:
           sdk-version: 22621
 
+      - name: Download FRP
+        run: |
+          Invoke-WebRequest -Uri https://github.com/fatedier/frp/releases/download/v0.48.0/frp_0.48.0_windows_amd64.zip -OutFile frp.zip
+          Expand-Archive -Path frp.zip -DestinationPath frp
+          Remove-Item frp.zip
+
+      - name: Move frpc.exe
+        run: |
+          Move-Item -Path frp/frp_0.48.0_windows_amd64/frpc.exe -Destination exes/frpc.exe
+          Remove-Item -Path frp -Recurse -Force
+
       - uses: dlemstra/code-sign-action@v1
         with:
           certificate: '${{ secrets.CERTIFICATE }}'
