@@ -29,6 +29,7 @@ jobs:
 
       - name: Move frpc.exe
         run: |
+          New-Item -Path exes -ItemType Directory -Force
           Move-Item -Path frp/frp_0.48.0_windows_amd64/frpc.exe -Destination exes/frpc.exe
           Remove-Item -Path frp -Recurse -Force
 
